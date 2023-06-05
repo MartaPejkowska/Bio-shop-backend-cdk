@@ -1,0 +1,30 @@
+{
+    "plugins": ["source-map-support"],
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": {
+                    "node": "8.10"
+                }
+            }
+        ]
+    ]
+}
+// {
+//     "plugins": ["source-map-support", "transform-runtime"],
+//     "presets": [
+//       ["env", { "node": "8.10" }],
+//       "stage-3"
+//     ]
+//   }
+// {
+//   "presets": [
+//       "@babel/preset-env",
+//       "@babel/preset-react"
+//   ],
+//   "plugins": [
+//       "transform-class-properties",
+//       "transform-object-rest-spread"
+//   ]
+// }

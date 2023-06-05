@@ -1,0 +1,164 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Bio shop",
+    "description": "Swagger for bio shop- RS school project",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.11"
+  },
+  "servers": [
+    {
+      "url": "https://yhubbm0idb.execute-api.eu-west-1.amazonaws.com"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Get list of products",
+        "description": "Get list of products",
+        "operationId": "getProductsList",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Products not found"
+          }
+        }
+      }
+    },
+    "/product/{productId}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Find product by ID",
+        "description": "Returns a one product by its id",
+        "operationId": "getProductsById",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "description": "ID of product to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Product not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "productId": {
+              "type": "integer"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "integer"
+            },
+            "image": {
+              "type": "string"
+            },
+            "packSize": {
+              "type": "string"
+            }
+          }
+        },
+        "example": [
+          {
+            "productId": 1,
+            "title": "Erythritol",
+            "description": "Erythritol has a delicate, sweet taste (about 70-80% sweetness compared to beet sugar). Due to the low glycemic index it can be used regardless of the state of health or the medications taken.",
+            "price": 12,
+            "image": "https://enkioo.com/hpeciai/3d84231b0b17d55cfd5af51a6d25082c/pol_pm_Enkioo-Erytrytol-erytrol-naturalny-slodzik-substancja-slodzaca-1000-g-11_3.png",
+            "packSize": "200g"
+          },
+          {
+            "productId": 2,
+            "title": "Cocoa",
+            "description": "Cocoa has a beneficial effect on the cardiovascular system. Helps regulate cholesterol and blood pressure.",
+            "price": 10,
+            "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2ew9uvCY7jFPazM0ik1eIMXgT5LusvjA-Sg&usqp=CAU",
+            "packSize": "100g"
+          }
+        ]
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Erythritol"
+          },
+          "description": {
+            "type": "string",
+            "example": "Erythritol has a delicate, sweet taste (about 70-80% sweetness compared to beet sugar). Due to the low glycemic index it can be used regardless of the state of health or the medications taken."
+          },
+          "price": {
+            "type": "integer",
+            "example": 12
+          },
+          "image": {
+            "type": "integer",
+            "example": "https://enkioo.com/hpeciai/3d84231b0b17d55cfd5af51a6d25082c/pol_pm_Enkioo-Erytrytol-erytrol-naturalny-slodzik-substancja-slodzaca-1000-g-11_3.png"
+          },
+          "packSize": {
+            "type": "string",
+            "example": "500g"
+          }
+        }
+      }
+    }
+  }
+}
