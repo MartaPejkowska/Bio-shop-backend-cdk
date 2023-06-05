@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "deploy": "serverless deploy",
+    "deploy": "cdk deploy",
     "test": "jest",
     "build": "webpack"
   },
