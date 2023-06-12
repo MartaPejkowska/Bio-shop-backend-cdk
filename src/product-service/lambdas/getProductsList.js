@@ -5,8 +5,6 @@ import { responses } from "../mock/responses";
 
 const dynamo= DynamoDBDocument.from(new DynamoDB());
 
-
-
 export const handler= async(event)=>{
     console.log(event)
     const productsScan= await dynamo.scan({

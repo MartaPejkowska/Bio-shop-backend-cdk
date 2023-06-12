@@ -11,7 +11,7 @@ const StockTable=process.env.STOCKTABLENAME
 const schema=Joi.object({
     title:Joi.string().min(3).required(),
     description:Joi.string(),
-    price:Joi.number().required(),
+    price:Joi.number().positive().required(),
     image:Joi.string(),
     packSize:Joi.string(),
     id:Joi.string().guid()

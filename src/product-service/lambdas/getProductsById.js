@@ -1,9 +1,6 @@
 import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 import { DynamoDB } from "@aws-sdk/client-dynamodb";
 import {responses} from '../mock/responses'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 const dynamo= DynamoDBDocument.from(new DynamoDB());
 

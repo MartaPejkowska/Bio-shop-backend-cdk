@@ -28,7 +28,7 @@ export const responses={
                 'Access-Control-Allow-Methods':'*',
                 'Access-Control-Allow-Origin':'*',
             },
-            statusCode:400,
+            statusCode:500,
             body:JSON.stringify(data)
         }
     },
