@@ -75,5 +75,5 @@ api.addRoutes({
 bucket.addEventNotification(
     s3.EventType.OBJECT_CREATED,
     new s3n.LambdaDestination(importFileParser),
-    {prefix: 'uploaded/', suffix: '.csv'},
+    {prefix: 'uploaded/', suffix: '.csv'}
   );

@@ -3,40 +3,45 @@ import { S3Client, PutObjectCommand} from "@aws-sdk/client-s3";
 
 const bucket=process.env.BUCKET_NAME
 
-
 export const handler= async (event)=>{
 
-const fileName=event.queryStringParameters.name
-console.log(fileName)
+  try{
 
-// if(!fileName){
-//     return responses._400('Invalid data')
-// }
+    const fileName=event.queryStringParameters.name
 
-const params={
-    Bucket:bucket,
-    Key:`uploaded/${fileName}`,
-    ContentType: 'text/csv',
-}
+    if(typeof event.queryStringParameters==undefined || !fileName){
+        return {statusCode: 400,
+          body: 'Invalid data, No file'}
+    }
 
-const command = new PutObjectCommand(params);
-const client=new S3Client({ region: 'eu-west-1' })
-const url = await getSignedUrl(client, command, { expiresIn: 3600 });
+    const params={
+        Bucket:bucket,
+        Key:`uploaded/${fileName}`,
+        ContentType: 'text/csv',
+    }
 
-console.log('url',url)
+    const command = new PutObjectCommand(params);
+    const client=new S3Client({ region: 'eu-west-1' })
+    const url = await getSignedUrl(client, command, { expiresIn: 3600 });
 
-const response = {
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-      'Content-Type':'text/csv'
-    },
-    statusCode: 200,
-    body: JSON.stringify({
-      url
-    }),
-  };
-  console.log(response)
-return response
+    const response = {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': true,
+          'Content-Type':'text/csv'
+        },
+        statusCode: 200,
+        body: JSON.stringify({
+          url
+        }),
+      };
+      console.log(response)
+    return response
+  }
+  catch{
+    err=> console.log(err)
+    return {statusCode: 500,
+    body: 'Error'}
+  }
 
 }
