@@ -33,7 +33,7 @@ export const handler= async event=>{
         console.log(item)
         let stock={
             product_id:id,
-            count:Math.floor(Math.random()*100)
+            count:products[i].count
         }
 
 

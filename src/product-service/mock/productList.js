@@ -5,6 +5,7 @@ export const products=[
   "price":"12",
   "image":"https://enkioo.com/hpeciai/3d84231b0b17d55cfd5af51a6d25082c/pol_pm_Enkioo-Erytrytol-erytrol-naturalny-slodzik-substancja-slodzaca-1000-g-11_3.png",
   "packSize": "200g",
+  "count":"10"
   },
   {"productId":"2",
   "title":"Cocoa",
@@ -12,6 +13,7 @@ export const products=[
   "price":"10",
   "image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2ew9uvCY7jFPazM0ik1eIMXgT5LusvjA-Sg&usqp=CAU",
   "packSize": "100g",
+  "count":"10"
   },
   {"productId":"3",
   "title":"Coconut oil",
@@ -19,6 +21,7 @@ export const products=[
   "price":"19",
   "image":"https://m.media-amazon.com/images/I/71HqNOCH32L.jpg",
   "packSize":"500g",
+  "count":"15"
  },
   {"productId":"4",
   "title":"Xylitol",
@@ -26,6 +29,7 @@ export const products=[
   "price":"11",
   "image":"https://m.media-amazon.com/images/I/81iMQq1LxML.jpg",
   "packSize": "400g",
+  "count":"16"
   },
   {
     "productId":"5",
@@ -34,6 +38,7 @@ export const products=[
   "price":"22",
   "image":"https://zielonaesencja.pl/pol_pl_Matcha-zielona-herbata-100-g-proszek-6949_1.webp",
   "packSize": "200g",
+  "count":"13"
   },
   {"productId":"6",
   "title":"Turmeric",
@@ -41,6 +46,7 @@ export const products=[
   "price":"6",
   "image":"https://m.media-amazon.com/images/I/812sgSnc3aL.jpg",
   "packSize": "50g",
+  "count":"18"
   },
   {"productId":"7",
     "title":"Quinoa",
@@ -48,6 +54,7 @@ export const products=[
   "price":"13",
   "image":"https://a.allegroimg.com/s1024/0cde76/5f1ff8614d069b3257d8b36a0484",
   "packSize": "100g",
+  "count":"10"
   },
   {"productId":"8",
   "title":"Nigella seeds",
@@ -55,6 +62,7 @@ export const products=[
   "price":"18",
   "image":"https://m.media-amazon.com/images/I/714xAS7NFlL._SL1500_.jpg",
   "packSize": "150g",
+  "count":"10"
   },
   {"productId":"9",
     "title":"Black seed oil",
@@ -62,5 +70,6 @@ export const products=[
     "price":"20",
     "image":"https://www.plantamed.pl/22144-large_default/black-seed-oil-olej-z-czarnuszki-125-ml-kiki-health.jpg",
     "packSize":"500ml",
+    "count":"11"
   }
   ]

@@ -14,22 +14,31 @@ const schema=Joi.object({
     price:Joi.number().positive().required(),
     image:Joi.string(),
     packSize:Joi.string(),
-    id:Joi.string().guid()
+    id:Joi.string().guid(),
+    count:Joi.number().required()
 })
 
 export const handler= async event=>{
 
     console.log(event)
-    const product= event.body ? JSON.parse(event.body) : JSON.parse(event)
+    const parsedEvent=JSON.parse(event.body)
+    const product={
+        title:parsedEvent.title,
+        description:parsedEvent.description,
+        price:parsedEvent.price,
+        image:parsedEvent.image,
+        packSize:parsedEvent.packSize
+    }
+    console.log(product)
     let id=uuidv4();
     product.id=id
 
     const stock={
     product_id:id,
-    count:Math.floor(Math.random()*100)
+    count:parsedEvent.count
 }
 
-    const result = schema.validate(product)
+    const result = schema.validate(parsedEvent)
     const isValid=result.error
 
      if (isValid=== undefined || null) {
@@ -38,16 +47,13 @@ export const handler= async event=>{
     .then(dynamo.put({TableName:StockTable, Item: stock}))
     .catch(err=> console.log(err))
 
-    const finalProduct=Object.assign(product, product.count=stock.count)
-    const succesMessage=['Product added to Product and Stock database  ', finalProduct]
-    // return responses._200(Object.assign(product, product.count=stock.count))
+    const succesMessage=['Product added to Product and Stock database  ', parsedEvent]
     console.log(succesMessage)
     return responses._200(succesMessage)
     }
     else
     {const failMessage='Invalid data   '+ result.error.details.map(detail =>  detail.message)
     console.log(failMessage)
-    // return responses._400(result.error.details.map(detail =>  detail.message))
     return responses._400(failMessage)
 }
 
