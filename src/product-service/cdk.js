@@ -2,9 +2,11 @@ import * as apiGateway from '@aws-cdk/aws-apigatewayv2-alpha'
 import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 import * as cdk from 'aws-cdk-lib'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
-import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as sns from 'aws-cdk-lib/aws-sns';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -18,7 +20,9 @@ const sharedLambdaProps={
     environment:{
         PRODUCT_AWS_REGION:process.env.PRODUCT_AWS_REGION,
         TABLENAME:process.env.TABLENAME,
-        STOCKTABLENAME:process.env.STOCKTABLENAME
+        STOCKTABLENAME:process.env.STOCKTABLENAME,
+        TOPIC_ARN:process.env.TOPIC_ARN,
+        SUB_EMAIL_MORE:process.env.SUB_EMAIL_MORE
     }
 }
 
@@ -72,13 +76,17 @@ insertManyProducts.addToRolePolicy(new iam.PolicyStatement({
     resources: [ '*' ]
   }));
 
-// const productsTable= new dynamodb.Table(stack, 'productsTable',{
-//     partitionKey:{name: 'id', type: dynamodb.AttributeType.STRING}
-// })
+const catalogBatchProcess= new NodejsFunction(stack, 'catalogBatchProcessLambda',{
+    ...sharedLambdaProps,
+    functionName:'catalogBatchProcess',
+    entry:'lambdas/catalogBatchProcess.js'
+})
 
-// const stockTable= new dynamodb.Table(stack, 'stockTable', {
-//     partitionKey:{ name: 'product_id', type: dynamodb.AttributeType.STRING}
-// })
+catalogBatchProcess.addToRolePolicy(new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    actions: [ 'dynamodb:*', "lambda:InvokeFunction" ],
+    resources: [ '*' ]
+  }));
 
 
 const api= new apiGateway.HttpApi(stack,'productApi',{
@@ -112,3 +120,29 @@ api.addRoutes({
     path:'/addproducts',
     methods:[apiGateway.HttpMethod.POST]
 })
+
+const itemsQueque= new sqs.Queue(stack,'itemsQueue',{
+    queueName:'catalogItemsQueue'
+})
+
+const productTopic= new sns.Topic(stack, 'createProductTopic', {
+    topicName:'createProductTopic'
+})
+
+new sns.Subscription(stack, 'productSubscribtion',{
+    endpoint:process.env.SUB_EMAIL,
+    protocol:sns.SubscriptionProtocol.EMAIL,
+    topic:productTopic
+})
+
+new sns.Subscription(stack, 'moreRecordsProductSubscribtion',{
+    endpoint:process.env.SUB_EMAIL_MORE,
+    protocol:sns.SubscriptionProtocol.EMAIL,
+    topic:productTopic,
+    filterPolicy:{
+        count:sns.SubscriptionFilter.numericFilter({greaterThanOrEqualTo:5})
+    }
+})
+
+productTopic.grantPublish(catalogBatchProcess)
+catalogBatchProcess.addEventSource(new SqsEventSource(itemsQueque, {batchSize:5}))

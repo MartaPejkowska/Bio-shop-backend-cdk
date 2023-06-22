@@ -157,6 +157,8 @@
                         "PRODUCT_AWS_REGION": "eu-west-1",
                         "TABLENAME": "productService-productsTable368A23F4-9VYE9SV3XB43",
                         "STOCKTABLENAME": "productService-stockTableF18D7CAA-H5ERO2WBPM44",
+                        "TOPIC_ARN": "arn:aws:sns:eu-west-1:839677929172:createProductTopic",
+                        "SUB_EMAIL_MORE": "marta.pejkowska@gmail.com",
                         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
                       }
                     },
@@ -325,6 +327,8 @@
                         "PRODUCT_AWS_REGION": "eu-west-1",
                         "TABLENAME": "productService-productsTable368A23F4-9VYE9SV3XB43",
                         "STOCKTABLENAME": "productService-stockTableF18D7CAA-H5ERO2WBPM44",
+                        "TOPIC_ARN": "arn:aws:sns:eu-west-1:839677929172:createProductTopic",
+                        "SUB_EMAIL_MORE": "marta.pejkowska@gmail.com",
                         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
                       }
                     },
@@ -480,7 +484,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-west-1"
                       },
-                      "s3Key": "755a2e36e9d6c892c97c8c559820b6a0a41fff32e1106ec4da46e6ae5243c7c8.zip"
+                      "s3Key": "1d1147932b8082df6fcc002a5af077c9c4b7386776baaddfa7d78c8b78a0dee9.zip"
                     },
                     "role": {
                       "Fn::GetAtt": [
@@ -493,6 +497,8 @@
                         "PRODUCT_AWS_REGION": "eu-west-1",
                         "TABLENAME": "productService-productsTable368A23F4-9VYE9SV3XB43",
                         "STOCKTABLENAME": "productService-stockTableF18D7CAA-H5ERO2WBPM44",
+                        "TOPIC_ARN": "arn:aws:sns:eu-west-1:839677929172:createProductTopic",
+                        "SUB_EMAIL_MORE": "marta.pejkowska@gmail.com",
                         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
                       }
                     },
@@ -661,6 +667,8 @@
                         "PRODUCT_AWS_REGION": "eu-west-1",
                         "TABLENAME": "productService-productsTable368A23F4-9VYE9SV3XB43",
                         "STOCKTABLENAME": "productService-stockTableF18D7CAA-H5ERO2WBPM44",
+                        "TOPIC_ARN": "arn:aws:sns:eu-west-1:839677929172:createProductTopic",
+                        "SUB_EMAIL_MORE": "marta.pejkowska@gmail.com",
                         "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
                       }
                     },
@@ -671,6 +679,235 @@
                 },
                 "constructInfo": {
                   "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda_nodejs.NodejsFunction",
+              "version": "2.81.0"
+            }
+          },
+          "catalogBatchProcessLambda": {
+            "id": "catalogBatchProcessLambda",
+            "path": "productService/catalogBatchProcessLambda",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "productService/catalogBatchProcessLambda/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "productService/catalogBatchProcessLambda/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "productService/catalogBatchProcessLambda/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "productService/catalogBatchProcessLambda/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "productService/catalogBatchProcessLambda/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:*",
+                                    "lambda:InvokeFunction"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                },
+                                {
+                                  "Action": "sns:Publish",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Ref": "createProductTopic05C0E62B"
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "sqs:ChangeMessageVisibility",
+                                    "sqs:DeleteMessage",
+                                    "sqs:GetQueueAttributes",
+                                    "sqs:GetQueueUrl",
+                                    "sqs:ReceiveMessage"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "itemsQueueB0C9D3EA",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "catalogBatchProcessLambdaServiceRoleDefaultPolicy7727D6C7",
+                            "roles": [
+                              {
+                                "Ref": "catalogBatchProcessLambdaServiceRoleED1ACC12"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.81.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.81.0"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "productService/catalogBatchProcessLambda/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "productService/catalogBatchProcessLambda/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.81.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "productService/catalogBatchProcessLambda/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.81.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "productService/catalogBatchProcessLambda/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-west-1"
+                      },
+                      "s3Key": "57c5dba80a750afd6ee046492ae0a3353f53016b607f52b887082eb56faa161a.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "catalogBatchProcessLambdaServiceRoleED1ACC12",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "PRODUCT_AWS_REGION": "eu-west-1",
+                        "TABLENAME": "productService-productsTable368A23F4-9VYE9SV3XB43",
+                        "STOCKTABLENAME": "productService-stockTableF18D7CAA-H5ERO2WBPM44",
+                        "TOPIC_ARN": "arn:aws:sns:eu-west-1:839677929172:createProductTopic",
+                        "SUB_EMAIL_MORE": "marta.pejkowska@gmail.com",
+                        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
+                      }
+                    },
+                    "functionName": "catalogBatchProcess",
+                    "handler": "index.handler",
+                    "runtime": "nodejs18.x"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.81.0"
+                }
+              },
+              "SqsEventSource:productServiceitemsQueueDF9ACF24": {
+                "id": "SqsEventSource:productServiceitemsQueueDF9ACF24",
+                "path": "productService/catalogBatchProcessLambda/SqsEventSource:productServiceitemsQueueDF9ACF24",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "productService/catalogBatchProcessLambda/SqsEventSource:productServiceitemsQueueDF9ACF24/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::EventSourceMapping",
+                      "aws:cdk:cloudformation:props": {
+                        "functionName": {
+                          "Ref": "catalogBatchProcessLambda971DBD58"
+                        },
+                        "batchSize": 5,
+                        "eventSourceArn": {
+                          "Fn::GetAtt": [
+                            "itemsQueueB0C9D3EA",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnEventSourceMapping",
+                      "version": "2.81.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.EventSourceMapping",
                   "version": "2.81.0"
                 }
               }
@@ -1182,6 +1419,120 @@
             "constructInfo": {
               "fqn": "@aws-cdk/aws-apigatewayv2-alpha.HttpApi",
               "version": "2.81.0-alpha.0"
+            }
+          },
+          "itemsQueue": {
+            "id": "itemsQueue",
+            "path": "productService/itemsQueue",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "productService/itemsQueue/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {
+                    "queueName": "catalogItemsQueue"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.81.0"
+            }
+          },
+          "createProductTopic": {
+            "id": "createProductTopic",
+            "path": "productService/createProductTopic",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "productService/createProductTopic/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                  "aws:cdk:cloudformation:props": {
+                    "topicName": "createProductTopic"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sns.Topic",
+              "version": "2.81.0"
+            }
+          },
+          "productSubscribtion": {
+            "id": "productSubscribtion",
+            "path": "productService/productSubscribtion",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "productService/productSubscribtion/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SNS::Subscription",
+                  "aws:cdk:cloudformation:props": {
+                    "protocol": "email",
+                    "topicArn": {
+                      "Ref": "createProductTopic05C0E62B"
+                    },
+                    "endpoint": "marta_wisniewska@vp.pl"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sns.Subscription",
+              "version": "2.81.0"
+            }
+          },
+          "moreRecordsProductSubscribtion": {
+            "id": "moreRecordsProductSubscribtion",
+            "path": "productService/moreRecordsProductSubscribtion",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "productService/moreRecordsProductSubscribtion/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SNS::Subscription",
+                  "aws:cdk:cloudformation:props": {
+                    "protocol": "email",
+                    "topicArn": {
+                      "Ref": "createProductTopic05C0E62B"
+                    },
+                    "endpoint": "marta.pejkowska@gmail.com",
+                    "filterPolicy": {
+                      "count": [
+                        {
+                          "numeric": [
+                            ">=",
+                            5
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.CfnSubscription",
+                  "version": "2.81.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sns.Subscription",
+              "version": "2.81.0"
             }
           },
           "CDKMetadata": {

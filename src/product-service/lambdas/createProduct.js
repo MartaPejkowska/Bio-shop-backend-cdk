@@ -21,7 +21,8 @@ const schema=Joi.object({
 export const handler= async event=>{
 
     console.log(event)
-    const parsedEvent=JSON.parse(event.body)
+
+    const parsedEvent=event.body? JSON.parse(event.body): event
     const product={
         title:parsedEvent.title,
         description:parsedEvent.description,
