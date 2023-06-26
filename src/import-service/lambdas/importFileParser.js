@@ -24,7 +24,7 @@ export const handler= async (event)=>{
 
 
       const csvFunction= response.Body.pipe(csv()).on("data", async(data) => {
-            console.log(data)
+
             results.push(data);
             }).on("end", async() => {
                   return results
