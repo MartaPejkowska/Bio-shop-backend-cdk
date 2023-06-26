@@ -6,6 +6,7 @@ import * as iam from 'aws-cdk-lib/aws-iam'
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import * as s3n from 'aws-cdk-lib/aws-s3-notifications'
 import * as s3 from 'aws-cdk-lib/aws-s3'
+import * as sqs from 'aws-cdk-lib/aws-sqs'
 import dotenv from 'dotenv'
 
 
@@ -14,19 +15,18 @@ dotenv.config()
 const app= new cdk.App()
 const stack= new cdk.Stack(app,'importService',{env:{region:'eu-west-1'}})
 
-const BUCKET_NAME=process.env.BUCKET_NAME
-const BUCKET_ARN=process.env.BUCKET_ARN
-
-
 // const bucket = new s3.Bucket(stack, BUCKET_NAME);
-const bucket = s3.Bucket.fromBucketName(stack, 'BucketByName', BUCKET_NAME)
+const bucket = s3.Bucket.fromBucketName(stack, 'BucketByName', process.env.BUCKET_NAME)
+
+const queue= sqs.Queue.fromQueueArn(stack, 'importQueque', process.env.SQS_ARN)
 
 const sharedLambdaProps={
     runtime: lambda.Runtime.NODEJS_18_X,
     environment:{
-        BUCKET_NAME:BUCKET_NAME,
+        BUCKET_NAME:process.env.BUCKET_NAME,
         SQS_Arn:process.env.SQS_ARN,
-        BUCKET_ARN:BUCKET_ARN
+        BUCKET_ARN:process.env.BUCKET_ARN,
+        SQS_URL:process.env.SQS_URL
     }
 }
 
@@ -35,6 +35,8 @@ const importFileParser= new NodejsFunction(stack,'importFileParserLambda',{
     functionName:'importFileParser',
     entry:'lambdas/importFileParser.js'
 })
+
+queue.grantSendMessages(importFileParser)
 
 const importProductsFile= new NodejsFunction(stack, 'importProductFileLambda',{
     ...sharedLambdaProps,
