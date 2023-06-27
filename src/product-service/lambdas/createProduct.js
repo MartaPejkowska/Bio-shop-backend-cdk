@@ -10,7 +10,7 @@ const StockTable=process.env.STOCKTABLENAME
 
 const schema=Joi.object({
     title:Joi.string().min(3).required(),
-    description:Joi.string(),
+    description:Joi.string().optional(),
     price:Joi.number().positive().required(),
     image:Joi.string(),
     packSize:Joi.string(),
@@ -25,10 +25,10 @@ export const handler= async event=>{
     const parsedEvent=event.body? JSON.parse(event.body): event
     const product={
         title:parsedEvent.title,
-        description:parsedEvent.description,
+        description:parsedEvent.description || null,
         price:parsedEvent.price,
-        image:parsedEvent.image,
-        packSize:parsedEvent.packSize
+        image:parsedEvent.image || null,
+        packSize:parsedEvent.packSize || null
     }
     console.log(product)
     let id=uuidv4();
