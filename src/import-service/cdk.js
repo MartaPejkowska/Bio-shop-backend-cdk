@@ -86,7 +86,7 @@ api.addRoutes({
     }),
     path:'/import',
     methods:[apiGateway.HttpMethod.GET],
-    // authorizer,
+    authorizer,
 
 })
 
