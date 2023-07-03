@@ -261,7 +261,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-west-1"
      },
-     "S3Key": "1d1147932b8082df6fcc002a5af077c9c4b7386776baaddfa7d78c8b78a0dee9.zip"
+     "S3Key": "34ff3a8148e2e7a71d3de40f2b622f58e37a78cb4a5fcd628ca240677df0cca9.zip"
     },
     "Role": {
      "Fn::GetAtt": [
@@ -289,7 +289,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "productService/createProductLambda/Resource",
-    "aws:asset:path": "asset.1d1147932b8082df6fcc002a5af077c9c4b7386776baaddfa7d78c8b78a0dee9",
+    "aws:asset:path": "asset.34ff3a8148e2e7a71d3de40f2b622f58e37a78cb4a5fcd628ca240677df0cca9",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
@@ -483,7 +483,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-west-1"
      },
-     "S3Key": "57c5dba80a750afd6ee046492ae0a3353f53016b607f52b887082eb56faa161a.zip"
+     "S3Key": "549f4ff4d0ff3775533663dd7a9c1389d41c8959ef0c805a3144f357a3c97c57.zip"
     },
     "Role": {
      "Fn::GetAtt": [
@@ -511,7 +511,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "productService/catalogBatchProcessLambda/Resource",
-    "aws:asset:path": "asset.57c5dba80a750afd6ee046492ae0a3353f53016b607f52b887082eb56faa161a",
+    "aws:asset:path": "asset.549f4ff4d0ff3775533663dd7a9c1389d41c8959ef0c805a3144f357a3c97c57",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }
